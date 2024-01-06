@@ -4,29 +4,46 @@ import storage from "../../utils/storage";
 import { Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
-import registermg from "../../assets/edit.jpg";
+import blogImg from "../../assets/blog.jpg";
 import BackdropLoader from "../../components/Loader/BackdropLoader";
 import "./protected.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout } from "../../layout/ContentLayout";
 import { API_URL } from "../../config";
+import styled from "@emotion/styled";
+import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 
-function EditUser() {
+const Textarea = styled(BaseTextareaAutosize)(
+  ({ theme }) => `
+  width: 100%;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: 8px; 
+  color: grey;
+  background: #e9e8e8;
+  border: 1px solid #e9e8e8 
+`
+);
+
+function UpdateBlog() {
   const token = storage.getToken();
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(null);
+  const [blog, setBlog] = useState<any>(null);
 
-  const getUser = async () => {
+  const getBlog = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/user/get-profile/${id}`, {
+      const response = await axios.get(`${API_URL}/blog/get/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUser(response?.data?.data);
+      setBlog(response?.data?.data);
       setLoading(false);
     } catch (error: any) {
       if (error.response) {
@@ -41,18 +58,14 @@ function EditUser() {
 
   useEffect(() => {
     if (id) {
-      getUser();
+      getBlog();
     }
   }, [id]);
 
   interface FormData {
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone_number: string;
-    password: string;
-    address?: string;
-    image?: string;
+    title: string;
+    author: string;
+    content: string;
   }
 
   const {
@@ -63,9 +76,9 @@ function EditUser() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      await axios.put(`${API_URL}/user/update-profile/${user?.id}`, data, {
+      await axios.put(`${API_URL}/blog/update/${blog?.id}`, data, {
         headers: {
-          Accept: "application/json, text/plain, */*",
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -81,7 +94,7 @@ function EditUser() {
   return (
     <ContentLayout title="Edit User">
       <BackdropLoader open={isLoading} />
-      {!user ? (
+      {!blog ? (
         <BackdropLoader open={true} />
       ) : (
         <>
@@ -96,7 +109,7 @@ function EditUser() {
               <div className="row">
                 <div className="col-md-7 make-center">
                   <div className="imgDiv">
-                    <img src={registermg} />
+                    <img className="blImg" src={blogImg} />
                   </div>
                 </div>
                 <div className="col-md-5 make-center">
@@ -107,89 +120,53 @@ function EditUser() {
                   >
                     <div>
                       <TextField
-                        id="first_name"
-                        {...register("first_name", { required: true })}
-                        label="First Name"
+                        id="title"
+                        {...register("title", { required: true })}
+                        label="Title"
                         variant="filled"
-                        defaultValue={user?.first_name}
+                        defaultValue={blog?.title}
                       />
 
-                      {errors.first_name && (
-                        <p className="errorText">First name is required.</p>
+                      {errors.title && (
+                        <p className="errorText">Title is required.</p>
                       )}
                     </div>
 
                     <div>
                       <TextField
-                        id="last_name"
-                        label="Last Name"
+                        id="author"
+                        label="Author"
+                        defaultValue={blog?.author}
                         variant="filled"
-                        defaultValue={user?.last_name}
-                        {...register("last_name", {
-                          required: "Last Name is required",
+                        {...register("author", {
+                          required: "Author name is required",
                           maxLength: {
                             value: 20,
-                            message:
-                              "Last Name must be less than 20 characters",
+                            message: "Author name cannot exceed 20 characters",
                           },
                           minLength: {
                             value: 1,
-                            message: "Last Name is required",
+                            message: "Author name is required",
                           },
                         })}
                       />
 
-                      {errors.last_name && (
-                        <p className="errorText">{errors.last_name.message}</p>
+                      {errors.author && (
+                        <p className="errorText">{errors.author.message}</p>
                       )}
                     </div>
-
-                    <div>
-                      <TextField
-                        id="email"
-                        label="Email"
-                        type="email"
-                        disabled
-                        defaultValue={user?.email}
-                        variant="filled"
+                    <div className="mt-3">
+                      <Textarea
+                        aria-label="minimum height"
+                        defaultValue={blog?.content}
+                        minRows={3}
+                        placeholder="Content"
+                        {...register("content", { required: true })}
                       />
-                    </div>
 
-                    <div>
-                      <TextField
-                        id="phone_number"
-                        label="Phone Number"
-                        type="tel"
-                        defaultValue={user?.phone_number}
-                        variant="filled"
-                        {...register("phone_number", {
-                          required: "Phone Number is required",
-                          minLength: {
-                            value: 1,
-                            message: "Phone Number is required",
-                          },
-                          maxLength: {
-                            value: 12,
-                            message:
-                              "Phone Number must be less than 12 characters",
-                          },
-                        })}
-                      />
-                      {errors.phone_number && (
-                        <p className="errorText">
-                          {errors.phone_number.message}
-                        </p>
+                      {errors.content && (
+                        <p className="errorText">Content is required.</p>
                       )}
-                    </div>
-
-                    <div>
-                      <TextField
-                        id="address"
-                        label="Address"
-                        variant="filled"
-                        defaultValue={user?.address}
-                        {...register("address")}
-                      />
                     </div>
 
                     <div className="make-center mt-5">
@@ -208,4 +185,4 @@ function EditUser() {
   );
 }
 
-export default EditUser;
+export default UpdateBlog;

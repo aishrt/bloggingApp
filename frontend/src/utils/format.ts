@@ -15,7 +15,7 @@ export const formatPercent = (str: string | number) => `${str} %`;
 
 // These are used to short the text if text is too long
 export const trimText = (string: string) => {
-  const result: string = string?.slice(0, 10) + '..';
+  const result: string = string?.slice(0, 60) + '.';
   return result;
 };
 

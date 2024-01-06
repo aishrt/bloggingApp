@@ -51,3 +51,27 @@
 .social-menu ul li:nth-child(4) a:hover {
   background-color: #000;
 }
+
+.landingList ul {
+  margin: 0;
+  padding: 0;
+}
+
+.landingList ul li {
+  margin: 0;
+  padding: 0;
+  list-style: disc;
+  margin-left: 23px;
+}
+
+.landingList {
+  margin-top: 30px !important;
+  display: flex !important;
+}
+
+.landingList .hdr {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}

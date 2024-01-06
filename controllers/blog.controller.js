@@ -6,7 +6,6 @@ const createBlog = catchAsync(async (req, res) => {
   try {
     const identity = req.user;
     const blog = await Blog.create({ ...req.body, userId: identity });
-    console.log(blog, "accc blog");
     return res.status(200).json({
       status: "200",
       message: "Blog created successfully!",
@@ -21,7 +20,7 @@ const createBlog = catchAsync(async (req, res) => {
   }
 });
 
-// --------------- Get User Profile Detail ------------------
+// --------------- Get One  Blog Data ------------------
 const getBlog = catchAsync(async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -40,7 +39,7 @@ const getBlog = catchAsync(async (req, res) => {
   }
 });
 
-// -------------------- Update User Profile ------------------
+// -------------------- Update Blog  ------------------
 const updateBlog = catchAsync(async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -61,7 +60,7 @@ const updateBlog = catchAsync(async (req, res) => {
   }
 });
 
-// ------------------------ Delete User Profile ------------------
+// ------------------------ Delete selected Blog ------------------
 const deleteBlog = catchAsync(async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -79,13 +78,15 @@ const deleteBlog = catchAsync(async (req, res) => {
   }
 });
 
-// --------------------- Get List of all user's ------------------
+// --------------------- Get List of all blog's ------------------
 const getList = catchAsync(async (req, res) => {
   const searchName = req.query.name;
-
-  const perPage = 10; //  Number of documents to display on each page
+  const currentUser = req.user;
+  const perPage = 9; //  Number of documents to display on each page
   const page = req.query.page ? parseInt(req.query.page, 10) : 1; // It specify the selected page number
-  let query = {};
+
+  let query = { userId: currentUser };
+
   if (searchName) {
     const searchValue = new RegExp(searchName, "i");
     query.$or = [{ title: searchValue }, { author: searchValue }];

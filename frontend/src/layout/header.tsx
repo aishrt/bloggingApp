@@ -58,7 +58,7 @@ function Header() {
 
   const handleList = () => {
     if (token) {
-      navigate("/user-list");
+      navigate("/blog-list");
     } else {
       toast.info("Login to access this page!");
     }
@@ -117,8 +117,8 @@ function Header() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={() => navigate("/user-list")}>
-                <Typography textAlign="center">User List</Typography>
+              <MenuItem onClick={() => navigate("/blog-list")}>
+                <Typography textAlign="center">Blog List</Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -146,7 +146,7 @@ function Header() {
               onClick={() => handleList()}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              User List
+              Blog List
             </Button>
           </Box>
 

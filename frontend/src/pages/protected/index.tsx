@@ -3,9 +3,10 @@ import { Suspense } from "react";
 import MyProfile from "./myProfile";
 import Header from "../../layout/header";
 import NotFound from "../public/notFound";
-import UserList from "./userList";
+import BlogList from "./blogList";
 import EditUser from "./editUser";
 import { CreateBlog } from "./createBlog";
+import UpdateBlog from "./updateBlog";
 
 const App = () => {
   return (
@@ -30,9 +31,10 @@ export const protectedRoutes = [
       { path: "/", element: <MyProfile /> },
       { path: "/profile", element: <MyProfile /> },
       { path: "/not-found", element: <NotFound /> },
-      { path: "/user-list", element: <UserList /> },
       { path: "/user-edit/:id", element: <EditUser /> },
       { path: "/create-blog", element: <CreateBlog /> },
+      { path: "/update-blog/:id", element: <UpdateBlog /> },
+      { path: "/blog-list", element: <BlogList /> },
       { path: "*", element: <Navigate to="/not-found" /> },
     ],
   },

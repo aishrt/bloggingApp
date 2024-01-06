@@ -12,7 +12,37 @@ function Landing() {
               <div className="editimgDiv">
                 <ul>
                   <li>
-                    <h5>Hi , This project is done by Aishwarya Raj Tyagi </h5>
+                    <h5>Hi ,I'm Aishwarya Raj Tyagi </h5>
+                    <h5>I have developed this blogging app using :</h5>
+                    <div className="row landingList">
+                      <div className="col-md-6">
+                        <ul>
+                          <p className="hdr">BACKEND :</p>
+                          <li>Node-Js</li>
+                          <li>Express</li>
+                          <li>Mongoose</li>
+                          <li>Axios</li>
+                          <li>Bcryptjs</li>
+                          <li>JWT</li>
+                          <li>Nodemon</li>
+                          <li>Moment</li>
+                          <li>Cors</li>
+                        </ul>
+                      </div>
+                      <div className="col-md-6">
+                        <ul>
+                          <p className="hdr">FRONTEND :</p>
+                          <li>React-Js</li>
+                          <li>Mui</li>
+                          <li>Bootstrap</li>
+                          <li>Helmet</li>
+                          <li>React Hook Form</li>
+                          <li>Toastify</li>
+                          <li>TypeScript</li>
+                          <li>Fontawesome</li>
+                        </ul>
+                      </div>
+                    </div>
                   </li>
                   <li>
                     <div className="social-menu">

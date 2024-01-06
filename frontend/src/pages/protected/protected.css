@@ -9,6 +9,17 @@
 .TPOsbc {
   /* border: 1px solid red; */
   margin-bottom: 25px;
+  margin-top: 30px;
+}
+.readBtn {
+  font-size: 13px;
+  font-weight: 600;
+  color: #5c9cdc;
+  border: none;
+  background-color: transparent;
+}
+.blImg {
+  width: 70%;
 }
 .selectDiv {
   margin-top: 14px !important;
@@ -30,6 +41,7 @@
   position: relative;
   padding: 20px;
   box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1607843137254902);
+  margin-bottom: 25px;
 }
 .blogBox .p1 {
   font-weight: 600;
@@ -42,13 +54,17 @@
   color: rgb(151, 145, 145);
   padding: 0;
   margin: 0;
+  width: 100%;
+  min-height: 20px;
+  height: 50px;
+  overflow: hidden;
 }
 
 .blogBox .p3 {
   font-weight: 600;
   font-size: 20px;
   color: gray;
-  padding: 28px 0 0 0;
+  padding: 14px 0 0 0;
   margin: 0;
   display: flex;
   align-items: flex-end;
@@ -86,4 +102,8 @@
 }
 .blogImg {
   width: 70% !important;
+}
+.blogBttn {
+  display: block !important;
+  margin-top: 18px !important;
 }

@@ -29,6 +29,12 @@ const blogSchema = mongoose.Schema(
   }
 );
 
+blogSchema.pre("save", function (next) {
+  if (this.isNew || this.isModified("title")) {
+    this.title = this.title.charAt(0).toUpperCase() + this.title.slice(1);
+  }
+  next();
+});
 blogSchema.plugin(toJSON);
 
 const Blog = mongoose.model("Blog", blogSchema);

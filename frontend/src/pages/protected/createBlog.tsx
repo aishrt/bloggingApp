@@ -51,14 +51,14 @@ export const CreateBlog = () => {
         },
       });
       toast.success(`Blog created  successful!`);
-      navigate("/user-list");
+      navigate("/blog-list");
     } catch (error: any) {
       toast.error(`${error?.response?.data?.message}`);
     }
   };
 
   return (
-    <ContentLayout title="Register">
+    <ContentLayout title="Create Blog">
       <div className="formDiv">
         <div className="registerMargin">
           <div className="row">
@@ -118,7 +118,7 @@ export const CreateBlog = () => {
                   />
 
                   {errors.content && (
-                    <p className="errorText">Message is required.</p>
+                    <p className="errorText">Content is required.</p>
                   )}
                 </div>
 
