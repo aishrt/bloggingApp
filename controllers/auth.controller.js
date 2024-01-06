@@ -30,16 +30,14 @@ const register = catchAsync(async (req, res) => {
     ) {
       return res.status(401).json({
         status: "401",
-        message: `Password must contain at least one letter and one number!`,
+        message: `Password must contain at least one letter and one digit!`,
       });
     }
 
     const user = await User.create(req.body);
     return res.status(200).json({
       status: "200",
-      message: `${
-        req.body.role === "admin" ? "Admin" : "User"
-      } registered successfully.`,
+      message: `User registered successfully.`,
       data: user,
     });
   } catch (error) {
@@ -55,7 +53,6 @@ const login = catchAsync(async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    const roles = user?.role === "user" ? "User" : "Admin";
     if (!user) {
       return res.status(400).json({
         status: "400",
@@ -71,7 +68,7 @@ const login = catchAsync(async (req, res) => {
     const tokens = await tokenService.generateAuthTokens(user);
     return res.status(200).json({
       status: "200",
-      message: `${roles}  logged in successfully.`,
+      message: `User logged in successfully.`,
       data: { user, tokens },
     });
   } catch (error) {

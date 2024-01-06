@@ -23,3 +23,67 @@
   color: #1976d2;
 }
 
+/* ------------ blogBox ------------------- */
+
+.blogBox {
+  border-radius: 10px;
+  position: relative;
+  padding: 20px;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1607843137254902);
+}
+.blogBox .p1 {
+  font-weight: 600;
+  font-size: 30px;
+  padding: 0;
+  margin: 0;
+}
+.blogBox .p2 {
+  font-size: 18px;
+  color: rgb(151, 145, 145);
+  padding: 0;
+  margin: 0;
+}
+
+.blogBox .p3 {
+  font-weight: 600;
+  font-size: 20px;
+  color: gray;
+  padding: 28px 0 0 0;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.blogBox .btnEdit {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  border: navajowhite;
+  background: transparent;
+  cursor: pointer;
+  font-size: 17px;
+  color: #bbb7b7;
+}
+
+.blogBox .btnDelete {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  border: navajowhite;
+  background: transparent;
+  cursor: pointer;
+  font-size: 17px;
+  color: #bbb7b7;
+}
+
+.blogBox .btnEdit:hover {
+  color: black;
+}
+.blogBox .btnDelete:hover {
+  color: rgb(209, 16, 16);
+}
+.blogImg {
+  width: 70% !important;
+}

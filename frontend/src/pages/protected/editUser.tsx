@@ -8,10 +8,8 @@ import registermg from "../../assets/edit.jpg";
 import BackdropLoader from "../../components/Loader/BackdropLoader";
 import "./protected.css";
 import { useNavigate, useParams } from "react-router-dom";
-import FileInput from "../../components/FileInput";
 import { ContentLayout } from "../../layout/ContentLayout";
 import { API_URL } from "../../config";
-import { fileUpload } from "../api/fileUpload";
 
 function EditUser() {
   const token = storage.getToken();
@@ -63,28 +61,13 @@ function EditUser() {
     formState: { errors },
   } = useForm<FormData>();
 
-  const [file, setFile] = useState<any>();
-  const handleFileChange = (file: File | null, fileDataURL: string) => {
-    setFile(file);
-  };
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      let uploadedFile = user?.image ? user?.image : null;
-
-      if (file) {
-        const imgResp = await fileUpload(file);
-        uploadedFile = imgResp;
-      }
-      const response = await axios.put(
-        `${API_URL}/user/update-profile/${user?.id}`,
-        { ...data, image: uploadedFile },
-        {
-          headers: {
-            Accept: "application/json, text/plain, */*",
-          },
-        }
-      );
+      await axios.put(`${API_URL}/user/update-profile/${user?.id}`, data, {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+        },
+      });
 
       toast.success("Data updated successfully!");
       navigate("/user-list");
@@ -122,12 +105,6 @@ function EditUser() {
                     noValidate
                     autoComplete="off"
                   >
-                    <div>
-                      <FileInput
-                        onFileChange={handleFileChange}
-                        defaultImage={user?.image}
-                      />
-                    </div>
                     <div>
                       <TextField
                         id="first_name"

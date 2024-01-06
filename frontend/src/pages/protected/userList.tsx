@@ -13,10 +13,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -69,7 +66,6 @@ function UserList() {
   const [userId, setId] = useState<string>("");
   const [totalPage, setTotalPage] = useState<number>(1);
   const [userDelId, setuserDelId] = useState<string>("");
-  const [selectedRole, setRole] = useState("user");
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -105,10 +101,6 @@ function UserList() {
     getUserSearchList();
   }, [searchTerm]);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setRole(event.target.value as string);
-  };
-
   const handleEdit = (identity: any) => {
     setId(identity);
   };
@@ -120,7 +112,7 @@ function UserList() {
   }, [userId]);
 
   const getUserSearchList = async () => {
-    const apiUrl = `${API_URL}/user/list?role=${selectedRole}&name=${searchTerm}`;
+    const apiUrl = `${API_URL}/blog/list?name=${searchTerm}`;
     try {
       const response = await axios.get(`${apiUrl}`, {
         headers: {
@@ -139,7 +131,7 @@ function UserList() {
   };
   const getUserList = async () => {
     setLoading(true);
-    let apiUrl = `${API_URL}/user/list?role=${selectedRole}&page=${currentPage}`;
+    let apiUrl = `${API_URL}/blog/list?page=${currentPage}`;
 
     try {
       const response = await axios.get(`${apiUrl}`, {
@@ -165,7 +157,7 @@ function UserList() {
     if (token) {
       getUserList();
     }
-  }, [token, isUpdating, selectedRole, currentPage]);
+  }, [token, isUpdating, currentPage]);
 
   const handleDelete = (idy: string) => {
     setuserDelId(idy);
@@ -176,7 +168,7 @@ function UserList() {
     setLoading(true);
     setUpdating(true);
     try {
-      await axios.delete(`${API_URL}/user/delete-profile/${userDelId}`, {
+      await axios.delete(`${API_URL}/blog/delete/${userDelId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -211,7 +203,7 @@ function UserList() {
           <div className="container mt-3">
             <h3>User Profiles Information :</h3>
             <div className="row TPOsbc">
-              <div className="col-md-7"></div>
+              <div className="col-md-9"></div>
               <div className="col-md-3">
                 <TextField
                   id="search"
@@ -228,26 +220,49 @@ function UserList() {
                   }}
                 />
               </div>
-              <div className="col-md-2 selectDiv">
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Select Role
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={selectedRole}
-                    label="Select Role"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={"user"}>User</MenuItem>
-                    <MenuItem value={"admin"}>Admin</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
             </div>
-
             {userList.length > 0 ? (
+              <>
+                <div className="row">
+                  {userList?.map((item: any, index: number) => (
+                    <>
+                      <div className="col-md-4 " key={index}>
+                        <div className="blogBox">
+                          <p className="p1">{item?.title}</p>
+                          <p className="p2">{item?.content}</p>
+                          <p className="p3">{item?.author}</p>
+                          <button className="btnDelete">
+                            <i className="fa-solid fa-trash-can"></i>
+                          </button>
+                          <button className="btnEdit">
+                            <i className="fa-solid fa-pen-to-square"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ))}
+                </div>
+                <div className="row m-4 rht">
+                  <Stack spacing={2}>
+                    <Pagination
+                      count={totalPage}
+                      variant="outlined"
+                      shape="rounded"
+                      page={currentPage}
+                      onChange={handlePageChange}
+                    />
+                  </Stack>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="make-center emptyList">
+                  <i className="fa-solid fa-box-archive"></i>
+                  <p>No Entry found </p>
+                </div>
+              </>
+            )}
+            {/* {userList.length > 0 ? (
               <>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -335,7 +350,7 @@ function UserList() {
                   <p>No Entry found </p>
                 </div>
               </>
-            )}
+            )} */}
           </div>
           <React.Fragment>
             <BootstrapDialog

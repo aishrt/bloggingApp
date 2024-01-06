@@ -5,6 +5,7 @@ import Header from "../../layout/header";
 import NotFound from "../public/notFound";
 import UserList from "./userList";
 import EditUser from "./editUser";
+import { CreateBlog } from "./createBlog";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ export const protectedRoutes = [
       { path: "/not-found", element: <NotFound /> },
       { path: "/user-list", element: <UserList /> },
       { path: "/user-edit/:id", element: <EditUser /> },
+      { path: "/create-blog", element: <CreateBlog /> },
       { path: "*", element: <Navigate to="/not-found" /> },
     ],
   },

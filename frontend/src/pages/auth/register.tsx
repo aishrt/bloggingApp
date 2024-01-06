@@ -6,12 +6,7 @@ import { Button } from "@mui/material";
 import registermg from "../../assets/register.jpg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import FileInput from "../../components/FileInput";
-import { fileUpload } from "../api/fileUpload";
 import { ContentLayout } from "../../layout/ContentLayout";
 import { API_URL } from "../../config";
 
@@ -22,49 +17,25 @@ interface FormData {
   phone_number: string;
   password: string;
   address?: string;
-  image?: string;
-  role?: string;
 }
 
 export const Register = () => {
   const navigate = useNavigate();
-  const [checked, setChecked] = useState(false);
 
-  const handleChange = (event: any) => {
-    setChecked(event.target.checked);
-  };
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
 
-  const [file, setFile] = useState<any>();
-
-  const handleFileChange = (file: File | null, fileDataURL: string) => {
-    setFile(file);
-  };
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const roleValue = checked ? "admin" : "user";
-      let uploadedFile = null;
-
-      if (file) {
-        const imgResp = await fileUpload(file);
-        uploadedFile = imgResp;
-      }
-      const response = await axios.post(
-        `${API_URL}/auth/register`,
-        { ...data, role: roleValue, image: uploadedFile },
-        {
-          headers: {
-            Accept: "application/json, text/plain, */*",
-          },
-        }
-      );
-      const roleType = response.data.data.role === "user" ? "User" : "Admin";
-      toast.success(`${roleType} registered successful!`);
+      await axios.post(`${API_URL}/auth/register`, data, {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+        },
+      });
+      toast.success(`User registered successful!`);
       navigate("/login");
     } catch (error: any) {
       toast.error(`${error?.response?.data?.message}`);
@@ -87,8 +58,6 @@ export const Register = () => {
                 noValidate
                 autoComplete="off"
               >
-                <FileInput onFileChange={handleFileChange} />
-
                 <div>
                   <TextField
                     id="first_name"
@@ -208,13 +177,6 @@ export const Register = () => {
                     <p className="errorText">{errors.address.message}</p>
                   )}
                 </div>
-
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={checked} onChange={handleChange} />
-                  }
-                  label="Want to register as Admin"
-                />
 
                 <div className="make-center">
                   <Button

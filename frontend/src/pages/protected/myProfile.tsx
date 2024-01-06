@@ -7,11 +7,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import editImg from "../../assets/edit.jpg";
 import BackdropLoader from "../../components/Loader/BackdropLoader";
 import "./protected.css";
-import FileInput from "../../components/FileInput";
 import { ContentLayout } from "../../layout/ContentLayout";
 import { API_URL } from "../../config";
 import userPic from "../../assets/user.png";
-import { fileUpload } from "../api/fileUpload";
 
 function MyProfile() {
   const token = storage.getToken();
@@ -71,21 +69,11 @@ function MyProfile() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setUpdating(true);
     try {
-      let uploadedFile = user?.image ? user?.image : null;
-
-      if (file) {
-        const imgResp = await fileUpload(file);
-        uploadedFile = imgResp;
-      }
-      const response = await axios.put(
-        `${API_URL}/user/update-profile/${user?.id}`,
-        { ...data, image: uploadedFile },
-        {
-          headers: {
-            Accept: "application/json, text/plain, */*",
-          },
-        }
-      );
+      await axios.put(`${API_URL}/user/update-profile/${user?.id}`, data, {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+        },
+      });
 
       toast.success("Data updated successfully!");
       setUpdating(false);
@@ -155,10 +143,6 @@ function MyProfile() {
                       noValidate
                       autoComplete="off"
                     >
-                      <FileInput
-                        onFileChange={handleFileChange}
-                        defaultImage={user?.image}
-                      />
                       <div>
                         <TextField
                           id="first_name"

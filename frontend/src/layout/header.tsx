@@ -120,9 +120,6 @@ function Header() {
               <MenuItem onClick={() => navigate("/user-list")}>
                 <Typography textAlign="center">User List</Typography>
               </MenuItem>
-              {/* <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Read Me</Typography>
-              </MenuItem> */}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -145,19 +142,12 @@ function Header() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {/* These are the pages routes that are in the header */}
             <Button
               onClick={() => handleList()}
               sx={{ my: 2, color: "white", display: "block" }}
             >
               User List
             </Button>
-            {/* <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Read Me
-            </Button> */}
           </Box>
 
           {token ? (

@@ -6,14 +6,6 @@ const { Token, User } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { tokenTypes } = require("../config/tokens");
 
-/**
- * Generate token
- * @param {ObjectId} userId
- * @param {Moment} expires
- * @param {string} type
- * @param {string} [secret]
- * @returns {string}
- */
 const generateToken = (userId, expires, type, secret = process.env.JWT_SECRET) => {
   const payload = {
     sub: userId,
@@ -24,15 +16,6 @@ const generateToken = (userId, expires, type, secret = process.env.JWT_SECRET) =
   return jwt.sign(payload, secret);
 };
 
-/**
- * Save a token
- * @param {string} token
- * @param {ObjectId} userId
- * @param {Moment} expires
- * @param {string} type
- * @param {boolean} [blacklisted]
- * @returns {Promise<Token>}
- */
 const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   const tokenDoc = await Token.create({
     token,
@@ -43,13 +26,6 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   });
   return tokenDoc;
 };
-
-/**
- * Verify token and return token doc (or throw an error if it is not valid)
- * @param {string} token
- * @param {string} type
- * @returns {Promise<Token>}
- */
 const verifyToken = async (token, type) => {
   const payload = jwt.verify(token, config.jwt.secret);
   const tokenDoc = await Token.findOne({
@@ -64,16 +40,9 @@ const verifyToken = async (token, type) => {
   return tokenDoc;
 };
 
-/**
- * Generate auth tokens
- * @param {User} user
- * @param {Employee} user
- * @returns {Promise<Object>}
- */
 const generateAuthTokens = async (user) => {
   const accessTokenExpires = moment().add(100, "days");
 
-  // const accessToken = jwt.sign(user.id, accessTokenExpires, tokenTypes.ACCESS);
   const accessToken = jwt.sign(user.id, process.env.JWT_SECRET);
   const refreshTokenExpires = moment().add(
     process.env.JWT_REFRESH_EXPIRATION_DAYS,
@@ -102,11 +71,6 @@ const generateAuthTokens = async (user) => {
     },
   };
 };
-/**
- * Generate reset password token
- * @param {string} email
- * @returns {Promise<string>}
- */
 const generateResetPasswordToken = async (email) => {
   const user = await User.findOne({ email });
   if (!user) {
@@ -130,30 +94,10 @@ const generateResetPasswordToken = async (email) => {
   return resetPasswordToken;
 };
 
-/**
- * Generate verify email token
- * @param {User} user
- * @returns {Promise<string>}
- */
-const generateVerifyEmailToken = async (user) => {
-  const expires = moment().add(
-    process.env.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
-    "minutes"
-  );
-  const verifyEmailToken = generateToken(
-    user.id,
-    expires,
-    tokenTypes.VERIFY_EMAIL
-  );
-  await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
-  return verifyEmailToken;
-};
-
 module.exports = {
   generateToken,
   saveToken,
   verifyToken,
   generateAuthTokens,
   generateResetPasswordToken,
-  generateVerifyEmailToken,
 };
